@@ -1,0 +1,10 @@
+export default defineEpochConfig({
+  url: "https://vue-experiment-template.web.app/",
+  title: 'Psychology Experiment',
+  icon: '/favicon.svg',
+  version: "0.1",
+  contactEmail: 'yourEmailAddress@fakeDomain.foo',
+  completion: {
+    mode: 'prolific',
+  },
+})

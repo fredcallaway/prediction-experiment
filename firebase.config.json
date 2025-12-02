@@ -1,0 +1,11 @@
+{
+  "projectId": "vue-experiment-template",
+  "appId": "1:417549358732:web:4edc81b39fe1ec77738da9",
+  "databaseURL": "https://vue-experiment-template-default-rtdb.firebaseio.com",
+  "storageBucket": "vue-experiment-template.firebasestorage.app",
+  "apiKey": "AIzaSyCqhcFNG74lllcS-4-g2UstfDQCkuw8Yp8",
+  "authDomain": "vue-experiment-template.firebaseapp.com",
+  "messagingSenderId": "417549358732",
+  "projectNumber": "417549358732",
+  "version": "2"
+}
