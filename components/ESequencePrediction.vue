@@ -62,7 +62,7 @@ const initialTarget = sequence[0]
 
 const state = reactive({
   index: 0,
-  stage: 'waiting' as 'waiting' | 'choice' |'outline' | 'feedback',
+  stage: 'waiting' as 'waiting' | 'choice' |'selected' | 'feedback',
   target: initialTarget,
   prediction: null as null | boolean,
   correct: null as null | boolean,
@@ -71,7 +71,7 @@ const state = reactive({
 const outlineClass = (sideIsRight: boolean) => {
   if (state.prediction === sideIsRight) {
     return (
-      state.stage === 'outline' ? 'border-gray-500' 
+      state.stage === 'selected' ? 'border-gray-500' 
       : state.correct ? 'border-green-500' 
       : 'border-red-500'
     )
@@ -103,7 +103,7 @@ onMounted(async () => {
     const prediction = response.key === 'RIGHT'
     state.prediction = prediction
     
-    state.stage = 'outline'
+    state.stage = 'selected'
     await sleep(outlineTime)
 
     const correct = prediction === state.target
@@ -143,11 +143,12 @@ const bonus = useBonus()
       </div>
     </div>
 
-    <div wfull hfull flex-center inset-0 absolute text-3xl fw-100 
-      transition-opacity duration-100 
-      :class="state.stage === 'choice' ? 'opacity-100' : 'opacity-0'"
-    >
-      ← ? →
+    <div wfull hfull flex-center inset-0 absolute>
+      <div transition-opacity duration-100 w28 h28 bg-gray flex-center text-4xl text-white :class="state.stage === 'choice' ? 'opacity-100' : 'opacity-0'" >
+        <div i-mdi-arrow-left-bold />
+        <div i-mdi-question-mark />
+        <div i-mdi-arrow-right-bold />
+      </div>
     </div>
 
   </div>
