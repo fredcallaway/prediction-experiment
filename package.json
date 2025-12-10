@@ -5,7 +5,7 @@
   "scripts": {
     "typecheck": "bun nuxt typecheck",
     "build": "nuxt build",
-    "dev": "nuxt dev --port 3030",
+    "dev": "nuxt dev --port 3086",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "preinstall": "git submodule update --init --recursive",
