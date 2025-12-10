@@ -1,7 +1,7 @@
 <script lang="ts">
 
 export const [provideSequencePredictionParams, useSequencePredictionParams, ProvideSequencePredictionParams] = defineParams({
-  length: 50,
+  length: 2,
   pRight: random.uniform(0, 1),
   selectionTime: 500,
   feedbackTime: 500,
@@ -105,14 +105,16 @@ const squareClass = () => {
   return ['translate-x-0', 'opacity-100']
 }
 
+const globalOpacity = ref(0)
+
 onMounted(async () => {
+  await sleep(500)
+  globalOpacity.value = 1
   for (let i = 0; i < sequence.length; i += 1) {
     state.index = i
     state.target = sequence[i]
     state.prediction = null
     state.correct = null
-    state.stage = 'waiting'
-    await sleep(waitTime)
     
     state.stage = 'choice'
     const response = await P.promiseKeyPress(['LEFT', 'RIGHT'])
@@ -137,7 +139,14 @@ onMounted(async () => {
       correct,
       rt: response.rt,
     })
+
+    state.stage = 'waiting'
+    await sleep(waitTime)
   }
+
+  globalOpacity.value = 0
+  await sleep(2500)
+
   E.done()
 })
 
@@ -151,7 +160,7 @@ const bonus = useBonus()
       Bonus: ${{ bonus.dollars.toFixed(2) }}
     </div>
     
-    <div class="wfull h100 flex items-center justify-center">
+    <div class="wfull h100 flex items-center justify-center" transition-opacity duration-2000 :style="{ opacity: globalOpacity }">
       <div class="relative wfull hfull flex items-center justify-center overflow-hidden">
         <div
           class="absolute square-50 bg-gray flex items-center justify-center gap-2 rounded-sm transition-all pointer-events-none"
