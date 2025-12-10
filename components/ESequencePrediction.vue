@@ -3,7 +3,7 @@
 export const [provideSequencePredictionParams, useSequencePredictionParams, ProvideSequencePredictionParams] = defineParams({
   length: 50,
   pRight: random.uniform(0, 1),
-  outlineTime: 500,
+  selectionTime: 500,
   feedbackTime: 700,
   waitTime: 0,
 })
@@ -41,7 +41,7 @@ declareDataView('SequencePrediction', (sessionData: SessionData) => {
 <script lang="ts" setup>
 
 const props = defineProps<{ params?: Partial<SequencePredictionParams> }>()
-const { length, pRight, outlineTime, feedbackTime, waitTime } = useSequencePredictionParams(props.params)
+const { length, pRight, selectionTime, feedbackTime, waitTime } = useSequencePredictionParams(props.params)
 
 const E = useEpoch('SequencePrediction')
 const { sleep } = useLocalAsync()
@@ -75,23 +75,14 @@ const arrowClass = (sideIsRight: boolean) => {
 
   if (state.stage === 'selected' || state.stage === 'feedback') {
     if (state.prediction === sideIsRight) {
-      const color = state.correct ? 'bg-green' : 'bg-red'
+      // const color = state.correct ? 'bg-green' : 'bg-red'
+      const color = 'bg-white'
       return ['opacity-100', color]
     }
     return 'opacity-20 bg-white'
   }
 
   return 'opacity-0 bg-white'
-}
-
-const questionClass = () => {
-  if (state.stage === 'choice') {
-    return 'opacity-100'
-  }
-  if (state.stage === 'selected') {
-    return 'opacity-0'
-  }
-  return 'opacity-0'
 }
 
 const squareClass = () => {
@@ -101,8 +92,9 @@ const squareClass = () => {
 
   if (state.stage === 'feedback') {
     return [
-      state.target ? 'translate-x-24' : '-translate-x-24',
+      state.target ? 'translate-x-10' : '-translate-x-10',
       'opacity-100',
+      state.correct ? 'bg-green' : 'bg-red',
     ]
   }
 
@@ -123,8 +115,8 @@ onMounted(async () => {
     const prediction = response.key === 'RIGHT'
     state.prediction = prediction
     
-    // state.stage = 'selected'
-    // await sleep(outlineTime)
+    state.stage = 'selected'
+    await sleep(selectionTime)
 
     const correct = prediction === state.target
     state.correct = correct
