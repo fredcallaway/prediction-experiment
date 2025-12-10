@@ -1,11 +1,11 @@
 <script lang="ts">
 
 export const [provideSequencePredictionParams, useSequencePredictionParams, ProvideSequencePredictionParams] = defineParams({
-  length: 10,
+  length: 50,
   pRight: random.uniform(0, 1),
   outlineTime: 500,
-  feedbackTime: 500,
-  waitTime: 500,
+  feedbackTime: 700,
+  waitTime: 0,
 })
 
 type SequencePredictionParams = ReturnType<typeof useSequencePredictionParams>
@@ -70,17 +70,18 @@ const state = reactive({
 
 const arrowClass = (sideIsRight: boolean) => {
   if (state.stage === 'choice') {
-    return 'opacity-100'
+    return 'opacity-100 bg-white'
   }
 
   if (state.stage === 'selected' || state.stage === 'feedback') {
     if (state.prediction === sideIsRight) {
-      return 'opacity-100'
+      const color = state.correct ? 'bg-green' : 'bg-red'
+      return ['opacity-100', color]
     }
-    return 'opacity-20'
+    return 'opacity-20 bg-white'
   }
 
-  return 'opacity-0'
+  return 'opacity-0 bg-white'
 }
 
 const questionClass = () => {
@@ -101,7 +102,7 @@ const squareClass = () => {
   if (state.stage === 'feedback') {
     return [
       state.target ? 'translate-x-24' : '-translate-x-24',
-      'opacity-0',
+      'opacity-100',
     ]
   }
 
@@ -122,8 +123,8 @@ onMounted(async () => {
     const prediction = response.key === 'RIGHT'
     state.prediction = prediction
     
-    state.stage = 'selected'
-    await sleep(outlineTime)
+    // state.stage = 'selected'
+    // await sleep(outlineTime)
 
     const correct = prediction === state.target
     state.correct = correct
@@ -155,14 +156,14 @@ const bonus = useBonus()
     </div>
     
     <div class="wfull h100 flex items-center justify-center border">
-      <div class="relative w-80 h-40 flex items-center justify-center overflow-hidden">
+      <div class="relative wfull hfull flex items-center justify-center overflow-hidden">
         <div
-          class="absolute w-28 h-28 bg-gray flex items-center justify-center gap-2 rounded-sm text-4xl text-white transition-all duration-700 pointer-events-none"
+          class="absolute square-50 bg-gray flex items-center justify-center gap-2 rounded-sm transition-all duration-500 pointer-events-none"
           :class="squareClass()"
         >
-          <div i-mdi-arrow-left-bold :class="arrowClass(false)" />
-          <div i-mdi-question-mark :class="questionClass()" />
-          <div i-mdi-arrow-right-bold :class="arrowClass(true)" />
+          <div transition-all square-24 i-mdi-arrow-left-bold :class="arrowClass(false)" />
+          <!-- <div square-10 i-mdi-question-mark :class="questionClass()" /> -->
+          <div transition-all square-24 i-mdi-arrow-right-bold :class="arrowClass(true)" />
         </div>
       </div>
     </div>
