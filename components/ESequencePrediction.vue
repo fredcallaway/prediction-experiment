@@ -68,25 +68,44 @@ const state = reactive({
   correct: null as null | boolean,
 })
 
-const outlineClass = (sideIsRight: boolean) => {
-  if (state.prediction === sideIsRight) {
-    return (
-      state.stage === 'selected' ? 'border-gray-500' 
-      : state.correct ? 'border-green-500' 
-      : 'border-red-500'
-    )
+const arrowClass = (sideIsRight: boolean) => {
+  if (state.stage === 'choice') {
+    return 'opacity-100'
   }
-  return 'border-transparent'
+
+  if (state.stage === 'selected' || state.stage === 'feedback') {
+    if (state.prediction === sideIsRight) {
+      return 'opacity-100'
+    }
+    return 'opacity-20'
+  }
+
+  return 'opacity-0'
 }
 
-const boxClass = (sideIsRight: boolean) => {
-  const isTarget = state.target === sideIsRight
+const questionClass = () => {
+  if (state.stage === 'choice') {
+    return 'opacity-100'
+  }
+  if (state.stage === 'selected') {
+    return 'opacity-0'
+  }
+  return 'opacity-0'
+}
 
-  if (state.stage === 'feedback' && isTarget) {
-    return ['bg-gray-900']
+const squareClass = () => {
+  if (state.stage === 'waiting') {
+    return ['opacity-0', 'translate-x-0']
   }
 
-  return ['bg-transparent']
+  if (state.stage === 'feedback') {
+    return [
+      state.target ? 'translate-x-24' : '-translate-x-24',
+      'opacity-0',
+    ]
+  }
+
+  return ['translate-x-0', 'opacity-100']
 }
 
 onMounted(async () => {
@@ -136,18 +155,15 @@ const bonus = useBonus()
     </div>
     
     <div class="wfull h100 flex items-center justify-center border">
-      <div class="flex items-center justify-around w150" >
-        <div v-for="sideIsRight in [false, true]" class="p-2 transition-colors duration-150 border-4" :class="outlineClass(sideIsRight)">
-          <div class="w-28 h-28 transition-colors duration-150" :class="boxClass(sideIsRight)" />
+      <div class="relative w-80 h-40 flex items-center justify-center overflow-hidden">
+        <div
+          class="absolute w-28 h-28 bg-gray flex items-center justify-center gap-2 rounded-sm text-4xl text-white transition-all duration-700 pointer-events-none"
+          :class="squareClass()"
+        >
+          <div i-mdi-arrow-left-bold :class="arrowClass(false)" />
+          <div i-mdi-question-mark :class="questionClass()" />
+          <div i-mdi-arrow-right-bold :class="arrowClass(true)" />
         </div>
-      </div>
-    </div>
-
-    <div wfull hfull flex-center inset-0 absolute>
-      <div transition-opacity duration-100 w28 h28 bg-gray flex-center text-4xl text-white :class="state.stage === 'choice' ? 'opacity-100' : 'opacity-0'" >
-        <div i-mdi-arrow-left-bold />
-        <div i-mdi-question-mark />
-        <div i-mdi-arrow-right-bold />
       </div>
     </div>
 
