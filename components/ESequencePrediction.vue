@@ -138,25 +138,25 @@ const bonus = useBonus()
       Bonus: ${{ bonus.dollars.toFixed(2) }}
     </div>
       
-  <div class="wfull h100 flex items-center justify-center border" transition-opacity duration-1000 :style="{ opacity: globalOpacity }">
-    <div class="flex items-center justify-around w150" >
-      <div v-for="sideIsRight in [false, true]" 
-        class="square-50 transition-colors duration-200 flex-center" 
-        :class="boxClass(sideIsRight)" 
-      >
+    <div class="wfull h100 flex items-center justify-center" transition-opacity duration-1000 :style="{ opacity: globalOpacity }">
+      <div class="flex items-center justify-around w150" >
+        <div v-for="sideIsRight in [false, true]" 
+          class="square-50 transition-colors duration-200 flex-center" 
+          :class="boxClass(sideIsRight)" 
+        >
 
-        <div circle-30 bg-black flex-center v-if="state.stage.startsWith('feedback') && state.target === sideIsRight" :class="
-          state.stage === 'feedback'
-            ? ('animate-fade-in')
-            : state.stage === 'feedback2'
-              ? (state.correct ? 'animate-fade-out-up' : 'animate-rotate-out-down-left')
-              : ''
-        " :style="{ animationDuration: `${(state.stage === 'feedback' ? 100 : feedbackOutTime)+30}ms` }" >
-          <div i-mdi-coin bg-amber wfull hfull />
+          <div circle-30 bg-black flex-center v-if="state.stage.startsWith('feedback') && state.target === sideIsRight" :class="
+            state.stage === 'feedback'
+              ? ('animate-fade-in')
+              : state.stage === 'feedback2'
+                ? (state.correct ? 'animate-fade-out-up' : 'animate-rotate-out-down-left')
+                : ''
+          " :style="{ animationDuration: `${(state.stage === 'feedback' ? 100 : feedbackOutTime)+30}ms` }" >
+            <div i-mdi-coin bg-amber wfull hfull />
+          </div>
+
         </div>
-
       </div>
     </div>
-  </div>
   </div>
 </template>
