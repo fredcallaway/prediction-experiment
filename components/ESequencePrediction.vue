@@ -4,8 +4,8 @@ export const [provideSequencePredictionParams, useSequencePredictionParams, Prov
   length: 50,
   pRight: random.uniform(0, 1),
   selectionTime: 500,
-  feedbackTime: 700,
-  waitTime: 0,
+  feedbackTime: 500,
+  waitTime: 500,
 })
 
 type SequencePredictionParams = ReturnType<typeof useSequencePredictionParams>
@@ -67,10 +67,14 @@ const state = reactive({
   prediction: null as null | boolean,
   correct: null as null | boolean,
 })
+useInspect(state)
+
+const arrowTransitionStyle = { transitionDuration: `${selectionTime}ms` }
+const squareTransitionStyle = { transitionDuration: `${feedbackTime}ms` }
 
 const arrowClass = (sideIsRight: boolean) => {
   if (state.stage === 'choice') {
-    return 'opacity-100 bg-white'
+    return 'opacity-20 bg-white'
   }
 
   if (state.stage === 'selected' || state.stage === 'feedback') {
@@ -82,12 +86,12 @@ const arrowClass = (sideIsRight: boolean) => {
     return 'opacity-20 bg-white'
   }
 
-  return 'opacity-0 bg-white'
+  return 'opacity-20 bg-white'
 }
 
 const squareClass = () => {
   if (state.stage === 'waiting') {
-    return ['opacity-0', 'translate-x-0']
+    return ['opacity-100', 'translate-x-0']
   }
 
   if (state.stage === 'feedback') {
@@ -143,19 +147,20 @@ const bonus = useBonus()
 
 <template>
   <div inset-0 relative>
-    <div font-bold>
+    <div font-bold text-lg>
       Bonus: ${{ bonus.dollars.toFixed(2) }}
     </div>
     
-    <div class="wfull h100 flex items-center justify-center border">
+    <div class="wfull h100 flex items-center justify-center">
       <div class="relative wfull hfull flex items-center justify-center overflow-hidden">
         <div
-          class="absolute square-50 bg-gray flex items-center justify-center gap-2 rounded-sm transition-all duration-500 pointer-events-none"
+          class="absolute square-50 bg-gray flex items-center justify-center gap-2 rounded-sm transition-all pointer-events-none"
           :class="squareClass()"
+          :style="squareTransitionStyle"
         >
-          <div transition-all square-24 i-mdi-arrow-left-bold :class="arrowClass(false)" />
+          <div transition-all square-24 i-mdi-arrow-left-bold :class="arrowClass(false)" :style="arrowTransitionStyle" />
           <!-- <div square-10 i-mdi-question-mark :class="questionClass()" /> -->
-          <div transition-all square-24 i-mdi-arrow-right-bold :class="arrowClass(true)" />
+          <div transition-all square-24 i-mdi-arrow-right-bold :class="arrowClass(true)" :style="arrowTransitionStyle" />
         </div>
       </div>
     </div>
