@@ -28,7 +28,7 @@ const correct = ref(false)
   <ESequence name="experiment" ref="experiment">
     <EConsent> <ConsentContent /> </EConsent>
   
-    <ESeqPredict />
+    <ESequencePrediction />
   
     <ESurvey />
   
