@@ -1,39 +1,91 @@
 
 <template>
   <p>
-      The purpose of this research is to understand the human mind.
-      <b>If you're reading this, you should either put the correct
-      consent form in ConsentContent.vue or message the researcher telling them
-      they are still using a placeholder consent form.</b>
-    </p>
-    <p>
-      There are no anticipated risks associated with participating in
-      this study. The effects of participating should be comparable to
-      those you would ordinarily experience from viewing a computer
-      monitor and using a mouse or keyboard for a similar amount of
-      time.
-    </p>
-    <p>
-      Your participation in this study is completely voluntary and you
-      may refuse to participate or you may choose to withdraw at any
-      time without penalty or loss of benefits to which you are
-      otherwise entitled. Your participation in this study will remain
-      confidential. No personally identifiable information will be
-      associated with your data.
-    </p>
-    <p>
-      If you have questions or concerns about your participation or
-      payment or want to request a summary of research findings, please
-      contact the researcher at {{ useConfig().contactEmail }}.
-      
-      <!-- For
-      any other problems related to this study, you may also contact the
-      faculty member supervising this work: Fiery Cushman,
-      cushman@fas.harvard.edu. For questions, concerns, suggestions, or
-      complaints that have not been or cannot be addressed by the
-      researcher, or to report research-related harm, please contact the
-      Committee on the Use of Human Subjects in Research at Harvard
-      University. Phone: 617-496-2847. Email: cuhs@fas.harvard.edu.
-      Please print or save a copy of this form for your records. -->
-    </p>
-</template>
+    You have been invited to take part in a research study to learn more
+    about the cognitive mechanisms underlying memory, value-based learning,
+    and decision-making. This study will be conducted by Marcelo Mattar, FAS
+    - Psychology, Arts &amp; Science, New York University
+  </p>
+  
+  <p>
+    If you agree to be in this study, you will be presented repeatedly
+    with images and written words on your computer screen and asked to
+    memorize them or to make decisions, responding using key presses or
+    mouse clicks.
+  </p>
+  
+  <p>
+    The amount of time to complete the study may vary between 5-90
+    minutes, depending on the experimental condition. A more precise time
+    estimate is provided on the Prolific flyer. There are no known risks
+    associated with your participation in this research beyond those of
+    everyday life.
+  </p>
+  
+  <p>
+    For your participation, you will receive the base payment advertised
+    on the Prolific flyer. You may additionally receive a bonus payment
+    based on the decisions you make in the experiment (the maximum bonus
+    is also given on the Prolific flyer). The base payment and
+    bonus are determined such that a median (i.e., typical) wage is US$12
+    per hour.
+  </p>
+  
+  <p>
+    If for any reason you do not complete the study (e.g. technical
+    difficulties, or a desire to stop), you will receive a pro-rated payment
+    based on the amount of the experiment that you completed. Importantly,
+    in the event that you do not finish the study, we will only be able to
+    provide partial compensation if you send a message through Prolific.
+  </p>
+  
+  <p>
+    Although you will receive no direct benefits, this research may help
+    the investigator understand the cognitive mechanisms underlying memory,
+    value-based learning, and decision-making.
+  </p>
+  
+  <p>
+    We will collect your prolific IDs for the purpose of assigning
+    performance-dependent bonuses. However, this information will never be
+    publicly shared.
+  </p>
+  
+  <p>
+    Anonymized data with identifying information removed may be used in
+    future research, shared with other researchers, or placed in a data
+    repository without your additional consent.
+  </p>
+  
+  <p>
+    Participation in this study is voluntary. You may refuse to
+    participate or withdraw at any time without penalty. You have the right
+    to skip or not answer any questions you prefer not to answer (with the
+    exception of quizzes to ensure the comprehension of instructions).
+  </p>
+  
+  <p>
+    If there is anything about the study or your participation that is
+    unclear or that you do not understand, if you have questions or wish to
+    report a research-related problem, you may contact Marcelo Mattar at 
+    <a href="mailto:mm13100@nyu.edu">mm13100@nyu.edu</a>; 
+    (267) 340-7645; 6 Washington Place, Room 863A New York, NY 10003.
+  </p>
+  
+  <p>
+    For questions about your rights as a research participant, you may
+    contact the University Committee on Activities Involving Human Subjects
+    (UCAIHS), New York University, 665 Broadway, Suite 804, New York, New
+    York, 10012, at 
+    <a href="mailto:ask.humansubjects@nyu.edu">ask.humansubjects@nyu.edu</a> 
+    or (212) 998-4808. Please reference the study # (IRB-FY2023-7478) when contacting the IRB
+    (UCAIHS).
+  </p>
+  
+  <p class="mb-2">
+    By clicking "I agree" below you are indicating that you are at least
+    18 years old, have read this consent form, and agree to participate in
+    this research study. Please print a copy of this page for your
+    records.
+  </p>
+  </template>
