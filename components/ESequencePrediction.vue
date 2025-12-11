@@ -103,8 +103,8 @@ onMounted(async () => {
     state.prediction = null
     
     state.stage = 'choice'
-    const response = await P.promiseKeyPress(['LEFT', 'RIGHT'])
-    const prediction = response.key === 'RIGHT'
+    const response = await P.promiseKeyPress(['F', 'J'])
+    const prediction = response.key === 'J'
     state.prediction = prediction
     
     state.stage = 'selected'
