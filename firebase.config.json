@@ -1,11 +1,11 @@
 {
-  "projectId": "vue-experiment-template",
-  "appId": "1:417549358732:web:4edc81b39fe1ec77738da9",
-  "databaseURL": "https://vue-experiment-template-default-rtdb.firebaseio.com",
-  "storageBucket": "vue-experiment-template.firebasestorage.app",
-  "apiKey": "AIzaSyCqhcFNG74lllcS-4-g2UstfDQCkuw8Yp8",
-  "authDomain": "vue-experiment-template.firebaseapp.com",
-  "messagingSenderId": "417549358732",
-  "projectNumber": "417549358732",
+  "projectId": "coin-game-53",
+  "appId": "1:935592287536:web:9cb506723791afe49e7cf5",
+  "databaseURL": "https://coin-game-53-default-rtdb.firebaseio.com",
+  "storageBucket": "coin-game-53.firebasestorage.app",
+  "apiKey": "AIzaSyBl7gCbmCUGXmMEH8fjd3iHQQGQSWoiv18",
+  "authDomain": "coin-game-53.firebaseapp.com",
+  "messagingSenderId": "935592287536",
+  "projectNumber": "935592287536",
   "version": "2"
 }
