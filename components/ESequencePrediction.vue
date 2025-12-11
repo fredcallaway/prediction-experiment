@@ -109,7 +109,9 @@ onMounted(async () => {
     state.stage = 'selected'
     await sleep(selectionTime)
 
-    bonus.addPoints(correct.value ? 1 : -1)
+    if (correct.value) {
+      bonus.addPoints(1)
+    }
 
     state.stage = 'feedback'
     await sleep(feedbackInTime)
