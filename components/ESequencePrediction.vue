@@ -17,8 +17,8 @@ export const [provideSequencePredictionParams, useSequencePredictionParams, Prov
   pRight: random.uniform(0, 1),
   selectionTime: 0,
   feedbackInTime: 500,
-  feedbackOutTime: 500,
-  waitTime: 200,
+  feedbackOutTime: 400,
+  waitTime: 100,
 })
 
 type SequencePredictionParams = ReturnType<typeof useSequencePredictionParams>
@@ -33,15 +33,16 @@ const [logSequencePredictionTrial, isSequencePredictionTrial] = declareEventLogg
 
 declareDataView('SequencePrediction', (sessionData: SessionData) => {
   const events = sessionData.events.filter(isSequencePredictionTrial)
-  return events.map(e => {
-    const [ , block, trial ] = e.currentEpochId.match(/(\w+)\[(\d+)\]-SequencePrediction/)!
-
+  return events.map((e, trial) => {
+    // const [ , block, trial ] = e.currentEpochId.match(/(\w+)\[(\d+)\]-SequencePrediction/)!
+    const block = e.currentEpochId.includes('instructions') ? 'instructions' : 'main'
+    
     return {
       block,
       trial,
-      target: e.data.target,
-      prediction: e.data.prediction,
-      correct: e.data.correct,
+      target: e.data.target ? 'right' : 'left',
+      prediction: e.data.prediction ? 'right' : 'left',
+      correct: e.data.prediction === e.data.target,
       rt: e.data.rt,
     }
   })
@@ -145,12 +146,12 @@ const bonus = useBonus()
 </script>
 
 <template>
-  <div inset-0 relative>
-    <div font-bold text-xl>
+  <div>
+    <div font-bold text-xl l1 t1>
       Bonus: ${{ bonus.dollars.toFixed(2) }}
     </div>
       
-    <div class="wfull h100 flex items-center justify-center" transition-opacity duration-1000 :style="{ opacity: globalOpacity }">
+    <div wfull h60 mt30 flex items-center justify-center transition-opacity duration-1000 :style="{ opacity: globalOpacity }">
       <div class="flex items-center justify-around w150" >
         <div v-for="sideIsRight in [false, true]" 
           class="square-50 transition-colors duration-200 flex-center" 

@@ -21,7 +21,7 @@ useInspect({paused})
 </script>
 
 <template>
-  <div wfull flex-center text-lg>
+  <div text-lg>
     <ESequencePrediction v-if="showGame" disabled />
 
     <div wfull flex-center text-center t5>
@@ -56,7 +56,7 @@ useInspect({paused})
         </EContinue>
 
         <EContinue delay=1000 >
-          Each coin is worth <span text-green-500 font-bold>{{ bonus.centsPerPoint }} cents!</span>
+          Each coin is worth <span text-green-500 font-bold>{{ bonus.pointValueString }}!</span>
           <Arrow text-green-500 x=220 y=-18 length=70 rot=5 inset-0/>
         </EContinue>
         
