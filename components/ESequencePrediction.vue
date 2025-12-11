@@ -23,10 +23,8 @@ export const [provideSequencePredictionParams, useSequencePredictionParams, Prov
 type SequencePredictionParams = ReturnType<typeof useSequencePredictionParams>
 
 type SequencePredictionTrial = {
-  index: number
   target: boolean
   prediction: boolean
-  correct: boolean
   rt: number
 }
 
@@ -123,10 +121,8 @@ onMounted(async () => {
 
 
     logSequencePredictionTrial({
-      index: i,
       target: state.target,
       prediction,
-      correct: correct.value,
       rt: response.rt,
     })
 
