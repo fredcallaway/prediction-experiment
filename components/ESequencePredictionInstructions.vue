@@ -2,44 +2,71 @@
 import { hooks, provideSequencePredictionParams } from './ESequencePrediction.vue'
 const { sleep } = useLocalAsync()
 
-const E = useEpoch('Instructions')
-
 provideSequencePredictionParams({
   length: 2,
-  feedbackInTime: 2000,
+  feedbackInTime: 1000,
 })
 
-const prompt = ref('Pick a side: LEFT or RIGHT')
-
-const showGame = ref(true)
+const currentEpoch = useCurrentEpoch()
+const showGame = computed(() => !R.isIncludedIn(currentEpoch.value._name, ['first', 'final']))
 const bonus = useBonus()
-
-onMounted(async () => {
-  prompt.value = 'Want to play a game?'
-  await until(showGame).toBe(true)
-
-  prompt.value = 'Pick a side: F (left) or J (right)'
-  await hooks.afterChoice.receive(async (state) => {
-    state.target = state.prediction!
-    prompt.value = `You found a coin! Each coin is worth ${bonus.centsPerPoint} cents.`
-  })
-  await sleep(2500)
-  prompt.value = 'Try again!'
-
-  await hooks.afterChoice.receive(async (state) => {
-    state.target = !state.prediction!
-    prompt.value = 'Dang, wrong side...'
-  })
-})
 
 </script>
 
 <template>
-  <div>
-    <div text-xl text-center t0 wfull pt13>{{ prompt }}</div>
-    <div v-if="!showGame" wfull flex-center t10>
-      <PButton value="Yes" @click="showGame = true" />
+  <div wfull flex-center>
+    <ESequencePrediction v-if="showGame" disabled />
+
+    <div wfull flex-center text-center t5>
+      <ESequence name="instructions">
+    
+        <EButtons name="first" values="Yes">
+          Want to play a game? It's a fun one!
+        </EButtons>
+    
+        <EPage @mounted="(epoch) => {
+          showGame = true
+          hooks.afterChoice.receive((state) => {
+            state.target = state.prediction!
+            epoch.done()
+          })
+        }">
+          Pick a side: F (left) or J (right)
+        </EPage>
+
+        <EWait :until="() => hooks.afterFeedback.receive()" />
+        
+        <EContinue delay=1000>
+          You found a coin!
+        </EContinue>
+
+        <EContinue delay=1000 >
+          Each coin is worth <span text-green-500 font-bold>{{ bonus.centsPerPoint }} cents!</span>
+          <Arrow text-green-500 x=200 y=-18 length=70 rot=5 inset-0/>
+        </EContinue>
+        
+        <EPage @mounted="(epoch) => {
+          hooks.afterChoice.receive((state) => {
+            state.target = !state.prediction!
+            epoch.done()
+          })
+        }">
+          Try again! (F or J)
+        </EPage>
+
+        <EWait :until="() => hooks.afterFeedback.receive()" />
+
+        <EContinue delay=1000>
+          Dang, wrong side...
+        </EContinue>
+
+        <EContinue name="final" button delay=3000 w120 >
+          That's it! On each round, we put the coin on one of the sides. 
+          If you guess which side it's on, you get five cents.
+          Good luck!
+
+        </EContinue>
+      </ESequence>
     </div>
-    <ESequencePrediction v-else />
   </div>
 </template>

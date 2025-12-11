@@ -106,10 +106,10 @@ onMounted(async () => {
     const response = await P.promiseKeyPress(['F', 'J'])
     const prediction = response.key === 'J'
     state.prediction = prediction
+    await hooks.afterChoice.emit(state)
     
     state.stage = 'selected'
     await sleep(selectionTime)
-    await hooks.afterChoice.emit(state)
 
     if (correct.value) {
       bonus.addPoints(1)
