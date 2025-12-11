@@ -52,6 +52,7 @@ type State = {
 const props = defineProps<{
   params?: Partial<SequencePredictionParams>
   afterChoice?: (state: State) => Promise<void>
+  afterFeedback?: (state: State) => Promise<void>
 }>()
 const { length, pRight, selectionTime, feedbackInTime, feedbackOutTime, waitTime } = useSequencePredictionParams(props.params)
 
@@ -92,10 +93,10 @@ const boxClass = (sideIsRight: boolean) => {
 const globalOpacity = ref(0)
 
 onMounted(async () => {
-  await sleep(100)
-  state.stage = 'waiting'
+  // await sleep(100)
+  // state.stage = 'waiting'
   globalOpacity.value = 1
-  await sleep(1000)
+  // await sleep(1000)
   
   for (let i = 0; i < sequence.length; i += 1) {
     state.index = i
@@ -110,20 +111,19 @@ onMounted(async () => {
     
     state.stage = 'selected'
     await sleep(selectionTime)
-
-    // if (props.afterChoice) await props.afterChoice(state)
+    if (props.afterChoice) await props.afterChoice(state)
 
     const correct = prediction === state.target
     state.correct = correct
     if (correct) {
       bonus.addPoints(1)
     }
-    
+
     state.stage = 'feedback'
     await sleep(feedbackInTime)
-    if (props.afterChoice) await props.afterChoice(state)
     state.stage = 'feedback2'
     await sleep(feedbackOutTime)
+    if (props.afterFeedback) await props.afterFeedback(state)
 
 
     logSequencePredictionTrial({
