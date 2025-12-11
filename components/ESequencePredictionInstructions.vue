@@ -1,23 +1,22 @@
 <script lang="ts" setup>
-const P = useParticipant()
+import { hooks } from './ESequencePrediction.vue'
+const { sleep } = useLocalAsync()
 
 const prompt = ref('Pick a side: LEFT or RIGHT')
 
-let trial = 0
-
-const afterChoice = async (state: { target: boolean; prediction: boolean | null }) => {
-  if (trial === 0) {
+onMounted(async () => {
+  await hooks.afterChoice.receive(async (state) => {
     state.target = state.prediction!
     prompt.value = 'You found a coin!'
-  } else {
+  })
+  await sleep(2000)
+  prompt.value = 'Try again!'
+
+  await hooks.afterChoice.receive(async (state) => {
     state.target = !state.prediction!
     prompt.value = 'Dang, wrong side...'
-  }
-}
-
-const afterFeedback = async (state: { target: boolean; prediction: boolean | null }) => {
-  prompt.value = 'Try again!'
-}
+  })
+})
 
 </script>
 
@@ -26,8 +25,6 @@ const afterFeedback = async (state: { target: boolean; prediction: boolean | nul
     <div text-xl text-center t0 wfull pt13>{{ prompt }}</div>
     <ESequencePrediction
       :params="{ length: 2 }"
-      :after-choice="afterChoice"
-      :after-feedback="afterFeedback"
     />
   </div>
 </template>

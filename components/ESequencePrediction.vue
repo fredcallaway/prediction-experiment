@@ -1,5 +1,16 @@
 <script lang="ts">
 
+type State = {
+  stage: 'waiting' | 'choice' | 'selected' | 'feedback' | 'feedback2'
+  target: boolean
+  prediction: null | boolean
+}
+
+export const hooks = {
+  afterChoice: defineHook<State>(),
+  afterFeedback: defineHook<State>(),
+}
+
 export const [provideSequencePredictionParams, useSequencePredictionParams, ProvideSequencePredictionParams] = defineParams({
   length: 50,
   pRight: random.uniform(0, 1),
@@ -41,18 +52,8 @@ declareDataView('SequencePrediction', (sessionData: SessionData) => {
 
 <script lang="ts" setup>
 
-type State = {
-  index: number
-  stage: 'waiting' | 'choice' | 'selected' | 'feedback' | 'feedback2'
-  target: boolean
-  prediction: null | boolean
-  correct: null | boolean
-}
-
 const props = defineProps<{
   params?: Partial<SequencePredictionParams>
-  afterChoice?: (state: State) => Promise<void>
-  afterFeedback?: (state: State) => Promise<void>
 }>()
 const { length, pRight, selectionTime, feedbackInTime, feedbackOutTime, waitTime } = useSequencePredictionParams(props.params)
 
@@ -74,13 +75,12 @@ if (sequence.length === 0) {
 const initialTarget = sequence[0]
 
 const state: State = reactive({
-  index: 0,
   stage: 'waiting',
   target: initialTarget,
   prediction: null,
-  correct: null,
 })
 useInspect(state)
+const correct = computed(() => state.prediction === state.target)
 
 const boxClass = (sideIsRight: boolean) => {
   if (state.prediction === sideIsRight) {
@@ -99,10 +99,8 @@ onMounted(async () => {
   // await sleep(1000)
   
   for (let i = 0; i < sequence.length; i += 1) {
-    state.index = i
     state.target = sequence[i]
     state.prediction = null
-    state.correct = null
     
     state.stage = 'choice'
     const response = await P.promiseKeyPress(['LEFT', 'RIGHT'])
@@ -111,11 +109,9 @@ onMounted(async () => {
     
     state.stage = 'selected'
     await sleep(selectionTime)
-    if (props.afterChoice) await props.afterChoice(state)
+    await hooks.afterChoice.emit(state)
 
-    const correct = prediction === state.target
-    state.correct = correct
-    if (correct) {
+    if (correct.value) {
       bonus.addPoints(1)
     }
 
@@ -123,14 +119,14 @@ onMounted(async () => {
     await sleep(feedbackInTime)
     state.stage = 'feedback2'
     await sleep(feedbackOutTime)
-    if (props.afterFeedback) await props.afterFeedback(state)
+    await hooks.afterFeedback.emit(state)
 
 
     logSequencePredictionTrial({
       index: i,
       target: state.target,
       prediction,
-      correct,
+      correct: correct.value,
       rt: response.rt,
     })
 
@@ -165,7 +161,7 @@ const bonus = useBonus()
             state.stage === 'feedback'
               ? ('animate-fade-in')
               : state.stage === 'feedback2'
-                ? (state.correct ? 'animate-fade-out-up' : 'animate-rotate-out-down-left')
+                ? (correct ? 'animate-fade-out-up' : 'animate-rotate-out-down-left')
                 : ''
           " :style="{ animationDuration: `${(state.stage === 'feedback' ? 100 : feedbackOutTime)+30}ms` }" >
             <div i-mdi-coin bg-amber wfull hfull />
