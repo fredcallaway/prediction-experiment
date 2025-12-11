@@ -41,7 +41,18 @@ declareDataView('SequencePrediction', (sessionData: SessionData) => {
 
 <script lang="ts" setup>
 
-const props = defineProps<{ params?: Partial<SequencePredictionParams> }>()
+type State = {
+  index: number
+  stage: 'waiting' | 'choice' | 'selected' | 'feedback' | 'feedback2'
+  target: boolean
+  prediction: null | boolean
+  correct: null | boolean
+}
+
+const props = defineProps<{
+  params?: Partial<SequencePredictionParams>
+  afterChoice?: (state: State) => Promise<void>
+}>()
 const { length, pRight, selectionTime, feedbackInTime, feedbackOutTime, waitTime } = useSequencePredictionParams(props.params)
 
 const E = useEpoch('SequencePrediction')
@@ -61,12 +72,12 @@ if (sequence.length === 0) {
 }
 const initialTarget = sequence[0]
 
-const state = reactive({
+const state: State = reactive({
   index: 0,
-  stage: 'waiting' as 'waiting' | 'choice' | 'selected' | 'feedback' | 'feedback2',
+  stage: 'waiting',
   target: initialTarget,
-  prediction: null as null | boolean,
-  correct: null as null | boolean,
+  prediction: null,
+  correct: null,
 })
 useInspect(state)
 
@@ -100,15 +111,20 @@ onMounted(async () => {
     state.stage = 'selected'
     await sleep(selectionTime)
 
+    // if (props.afterChoice) await props.afterChoice(state)
+
     const correct = prediction === state.target
     state.correct = correct
     if (correct) {
       bonus.addPoints(1)
     }
+    
     state.stage = 'feedback'
     await sleep(feedbackInTime)
+    if (props.afterChoice) await props.afterChoice(state)
     state.stage = 'feedback2'
     await sleep(feedbackOutTime)
+
 
     logSequencePredictionTrial({
       index: i,

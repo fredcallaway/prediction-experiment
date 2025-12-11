@@ -36,6 +36,7 @@ const correct = ref(false)
       </div>
     </EButtons>
   
+    <ESequencePredictionInstructions />
     <ESequencePrediction />
   
     <ESurvey />
