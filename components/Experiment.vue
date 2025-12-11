@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { provideSequencePredictionParams } from './ESequencePrediction.vue'
 
 logEvent('experiment.begin')
 
@@ -11,11 +12,10 @@ defineWindowSize({
 await new Promise(resolve => setTimeout(resolve, 10))
 
 const bonus = useBonus()
-bonus.centsPerPoint = 5
+bonus.centsPerPoint = 1
 
-const colors = ['orange', 'blue'] as const  // `as const` allows typescript to confirm these colors are supported by PButton
-const trials = random.shuffle(repeat(colors, 2)).map(color => ({color}))
-const correct = ref(false)
+const { length, pRight } = useExperimentState()
+provideSequencePredictionParams({ length, pRight })
 
 </script>
 
@@ -23,7 +23,7 @@ const correct = ref(false)
 <!--v-if-->
 
 <template>
-<div mt-10px w800px relative>
+<div mt-10px w800px relative main-content>
 
   <ESequence name="experiment" ref="experiment">
     <EConsent> <ConsentContent /> </EConsent>
@@ -38,4 +38,3 @@ const correct = ref(false)
   </ESequence>
 </div>
 </template>
-

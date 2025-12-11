@@ -11,6 +11,8 @@ export const useExperimentState = createGlobalState(() => {
 
   return reactive({
     initialPoints: round(0.9 * length - ePoints),
+    length,
+    pRight,
   })
 })
 

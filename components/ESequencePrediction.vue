@@ -7,6 +7,7 @@ type State = {
 }
 
 export const hooks = {
+  beforeChoice: defineHook<State>(),
   afterChoice: defineHook<State>(),
   afterFeedback: defineHook<State>(),
 }
@@ -14,10 +15,10 @@ export const hooks = {
 export const [provideSequencePredictionParams, useSequencePredictionParams, ProvideSequencePredictionParams] = defineParams({
   length: 50,
   pRight: random.uniform(0, 1),
-  selectionTime: 300,
+  selectionTime: 0,
   feedbackInTime: 500,
-  feedbackOutTime: 300,
-  waitTime: 500,
+  feedbackOutTime: 500,
+  waitTime: 200,
 })
 
 type SequencePredictionParams = ReturnType<typeof useSequencePredictionParams>
@@ -99,8 +100,8 @@ onMounted(async () => {
   for (let i = 0; i < sequence.length; i += 1) {
     state.target = sequence[i]
     state.prediction = null
-    
     state.stage = 'choice'
+    await hooks.beforeChoice.emit(state)
     const response = await P.promiseKeyPress(['F', 'J'])
     const prediction = response.key === 'J'
     state.prediction = prediction
@@ -119,12 +120,15 @@ onMounted(async () => {
     await sleep(feedbackOutTime)
     await hooks.afterFeedback.emit(state)
 
-
     logSequencePredictionTrial({
       target: state.target,
       prediction,
       rt: response.rt,
     })
+
+    state.stage = 'waiting'
+    state.prediction = null
+    await sleep(waitTime)
 
     // state.stage = 'waiting'
     // await sleep(waitTime)
@@ -142,7 +146,7 @@ const bonus = useBonus()
 
 <template>
   <div inset-0 relative>
-    <div font-bold text-lg>
+    <div font-bold text-xl>
       Bonus: ${{ bonus.dollars.toFixed(2) }}
     </div>
       
