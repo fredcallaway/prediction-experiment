@@ -6,7 +6,7 @@ export const useExperimentState = createGlobalState(() => {
     length: [30]
   })
   const eCorrect = expectedCorrect(pRight, length)
-  const ePoints = eCorrect
+  const ePoints = eCorrect - (length - eCorrect)
   useInspect({ pRight, length, eCorrect, ePoints }, 'experimentState')
 
   return reactive({

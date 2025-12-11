@@ -11,6 +11,8 @@ const currentEpoch = useCurrentEpoch()
 const showGame = computed(() => !R.isIncludedIn(currentEpoch.value._name, ['first', 'final']))
 const bonus = useBonus()
 
+const { initialPoints } = useExperimentState()
+
 </script>
 
 <template>
@@ -57,13 +59,17 @@ const bonus = useBonus()
         <EWait :until="() => hooks.afterFeedback.receive()" />
 
         <EContinue delay=1000>
-          Dang, wrong side...
+          Wrong side! That means you lose {{ bonus.centsPerPoint }} cents 😕.
+          <Arrow text-red-500 x=200 y=-18 length=70 rot=5 inset-0/>
         </EContinue>
 
-        <EContinue name="final" button delay=3000 w120 >
+        <EContinue name="final" button delay=3000 w120>
+          <OnMounted :fn="() => bonus.points = initialPoints" />
           That's it! On each round, we put the coin on one of the sides. 
-          If you guess which side it's on, you get five cents.
-          Good luck!
+          If you guess which side it's on, you get five cents. 
+          If you guess wrong, you lose five cents.
+          <br><br>
+          We'll start you off with {{ bonus.dollarsString }}.
 
         </EContinue>
       </ESequence>
