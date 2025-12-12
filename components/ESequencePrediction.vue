@@ -13,7 +13,7 @@ export const hooks = {
 }
 
 export const [provideSequencePredictionParams, useSequencePredictionParams, ProvideSequencePredictionParams] = defineParams({
-  length: 50,
+  length: 10,
   pRight: random.uniform(0, 1),
   selectionTime: 0,
   feedbackInTime: 500,
@@ -32,20 +32,20 @@ type SequencePredictionTrial = {
 const [logSequencePredictionTrial, isSequencePredictionTrial] = declareEventLogger<SequencePredictionTrial>('SequencePrediction.trial')
 
 declareDataView('SequencePrediction', (sessionData: SessionData) => {
-  const events = sessionData.events.filter(isSequencePredictionTrial)
-  return events.map((e, trial) => {
-    // const [ , block, trial ] = e.currentEpochId.match(/(\w+)\[(\d+)\]-SequencePrediction/)!
-    const block = e.currentEpochId.includes('instructions') ? 'instructions' : 'main'
-    
-    return {
-      block,
+  const pRight = round3(assertNumber(sessionData.meta.conditions!.pRight))
+  return R.pipe(
+    sessionData.events,
+    R.filter(isSequencePredictionTrial),
+    R.filter(e => !e.currentEpochId.includes('instructions')),
+    R.map((e, trial) => ({
+      pRight,
       trial,
       target: e.data.target ? 'right' : 'left',
       prediction: e.data.prediction ? 'right' : 'left',
       correct: e.data.prediction === e.data.target,
       rt: e.data.rt,
-    }
-  })
+    }))
+  )
 })
 
 </script>
