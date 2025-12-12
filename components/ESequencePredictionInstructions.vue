@@ -57,7 +57,7 @@ useInspect({paused})
 
         <EContinue delay=1000 >
           Each coin is worth <span text-green-500 font-bold>{{ bonus.pointValueString }}!</span>
-          <Arrow text-green-500 x=220 y=-18 length=70 rot=5 inset-0/>
+          <Arrow text-green-500 x=135 y=-5 length=70 rot=5 inset-0/>
         </EContinue>
         
         <EPage @mounted="(epoch) => {
