@@ -1,11 +1,12 @@
 {
-  "projectId": "coin-game-53",
-  "appId": "1:935592287536:web:9cb506723791afe49e7cf5",
-  "databaseURL": "https://coin-game-53-default-rtdb.firebaseio.com",
-  "storageBucket": "coin-game-53.firebasestorage.app",
-  "apiKey": "AIzaSyBl7gCbmCUGXmMEH8fjd3iHQQGQSWoiv18",
-  "authDomain": "coin-game-53.firebaseapp.com",
-  "messagingSenderId": "935592287536",
-  "projectNumber": "935592287536",
+  "projectId": "coin-game-55",
+  "appId": "1:983837053368:web:eaa6b084caa983e84a3f4d",
+  "databaseURL": "https://coin-game-55-default-rtdb.firebaseio.com",
+  "storageBucket": "coin-game-55.firebasestorage.app",
+  "apiKey": "AIzaSyAn6mEqCxEjlrWQL1ok6Zgs9iV1CtlrXng",
+  "authDomain": "coin-game-55.firebaseapp.com",
+  "messagingSenderId": "983837053368",
+  "measurementId": "G-3LG2CPD6YN",
+  "projectNumber": "983837053368",
   "version": "2"
 }
