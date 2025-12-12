@@ -3,7 +3,7 @@ export const useExperimentState = createGlobalState(() => {
   const { choice } = useConditions()
   const { pRight, length } = choice({
     pRight: range(0.1, 0.9, 0.1),
-    length: [30]
+    length: [50]
   })
   const eCorrect = expectedCorrect(pRight, length)
   const ePoints = eCorrect
