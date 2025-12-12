@@ -31,14 +31,14 @@ type SequencePredictionTrial = {
 
 const [logSequencePredictionTrial, isSequencePredictionTrial] = declareEventLogger<SequencePredictionTrial>('SequencePrediction.trial')
 
-declareDataView('SequencePrediction', (sessionData: SessionData) => {
+declareDataView('prediction', (sessionData: SessionData) => {
   const pRight = round3(assertNumber(sessionData.meta.conditions!.pRight))
   return R.pipe(
     sessionData.events,
     R.filter(isSequencePredictionTrial),
     R.filter(e => !e.currentEpochId.includes('instructions')),
     R.map((e, trial) => ({
-      pRight,
+      p_right: pRight,
       trial,
       target: e.data.target ? 'right' : 'left',
       prediction: e.data.prediction ? 'right' : 'left',
