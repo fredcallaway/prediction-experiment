@@ -21,7 +21,7 @@ export default defineConfig({
       `,
       'btn': 'btnbase bg-gray hover:bg-gray-500',
       'card': 'p-4 rounded-lg',
-      'flex-center': 'flex flex-wrap justify-center items-center',
+      'flex-center': 'flex flex-col justify-center items-center',
       'input': 'border border-2 px-3 py-1 box-border bg-white',
       'input-mono': 'border-2 px-3 py-2 box-border font-mono text-xs',
     },
