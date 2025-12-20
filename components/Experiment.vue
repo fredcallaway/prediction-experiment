@@ -23,7 +23,7 @@ provideSequencePredictionParams({ length, pRight })
 <!--v-if-->
 
 <template>
-<div wfull hfull relative>
+<div wfull hfull relative mt2>
 
   <ESequence name="experiment" ref="experiment">
     <EConsent> <ConsentContent /> </EConsent>
