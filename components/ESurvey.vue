@@ -5,6 +5,7 @@ const formData = reactive({
   difficulty: "",
   // understood: "",
   fun: "",
+  pattern: "",
   feedback: "",
 })
 
@@ -34,6 +35,17 @@ const submit = () => {
         :options="['worse than average', 'typical', 'better than average']"
         v-model="formData.fun"
       />
+
+      <fieldset>
+        <h4>Did you notice a pattern in which side the coin was on?</h4>
+        <textarea
+          input
+          id="pattern"
+          v-model="formData.pattern"
+          rows="3"
+          w-580px
+        ></textarea>
+      </fieldset>
 
       <fieldset>
         <h4>Do you have any other feedback? (optional)</h4>

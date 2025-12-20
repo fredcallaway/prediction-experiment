@@ -14,8 +14,8 @@ await new Promise(resolve => setTimeout(resolve, 10))
 const bonus = useBonus()
 bonus.centsPerPoint = 1
 
-const { length, pRight } = useExperimentState()
-provideSequencePredictionParams({ length, pRight })
+const { length } = useExperimentState()
+provideSequencePredictionParams({ length, fsm: 'fsm1' })
 
 </script>
 

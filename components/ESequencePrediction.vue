@@ -14,7 +14,7 @@ export const hooks = {
 
 export const [provideSequencePredictionParams, useSequencePredictionParams, ProvideSequencePredictionParams] = defineParams({
   length: 10,
-  pRight: random.uniform(0, 1),
+  fsm: FSM.makeSingle(0.5) as FSM | FSMName,
   selectionTime: 0,
   feedbackInTime: 500,
   feedbackOutTime: 400,
@@ -32,13 +32,13 @@ type SequencePredictionTrial = {
 const [logSequencePredictionTrial, isSequencePredictionTrial] = declareEventLogger<SequencePredictionTrial>('SequencePrediction.trial')
 
 declareDataView('prediction', (sessionData: SessionData) => {
-  const pRight = round3(assertNumber(sessionData.meta.conditions!.pRight))
+  const fsm = sessionData.meta.conditions!.fsm as string
   return R.pipe(
     sessionData.events,
     R.filter(isSequencePredictionTrial),
     R.filter(e => !e.currentEpochId.includes('instructions')),
     R.map((e, trial) => ({
-      p_right: pRight,
+      fsm,
       trial,
       target: e.data.target ? 'right' : 'left',
       prediction: e.data.prediction ? 'right' : 'left',
@@ -55,7 +55,7 @@ declareDataView('prediction', (sessionData: SessionData) => {
 const props = defineProps<{
   params?: Partial<SequencePredictionParams>
 }>()
-const { length, pRight, selectionTime, feedbackInTime, feedbackOutTime, waitTime } = useSequencePredictionParams(props.params)
+const { length, fsm: fsmParam, selectionTime, feedbackInTime, feedbackOutTime, waitTime } = useSequencePredictionParams(props.params)
 
 const E = useEpoch('SequencePrediction')
 const { sleep } = useLocalAsync()
@@ -64,14 +64,13 @@ const P = useParticipant()
 if (!Number.isInteger(length) || length <= 0) {
   throw new Error('SequencePrediction length must be a positive integer')
 }
-if (pRight < 0 || pRight > 1) {
-  throw new Error('SequencePrediction pRight must be between 0 and 1')
-}
 
-const sequence = Array.from({ length }, () => Math.random() < pRight)
+const fsm = typeof fsmParam === 'string' ? FSM.load(fsmParam) : fsmParam
+const sequence = Array.from({ length }, () => fsm.step())
 if (sequence.length === 0) {
   throw new Error('SequencePrediction sequence length must be positive')
 }
+console.log('sequence', sequence)
 const initialTarget = sequence[0]
 
 const state: State = reactive({

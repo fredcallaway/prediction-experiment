@@ -78,7 +78,7 @@ useInspect({paused})
 
         <EContinue name="final" button delay=3000 w120 >
           That's it! On each round, we put the coin on one of the sides. 
-          If you guess which side it's on, you get five cents.
+          If you guess which side it's on, you get {{ bonus.pointValueString }}!
           <br><br>
           There will {{ length }} rounds. Good luck!
         </EContinue>
