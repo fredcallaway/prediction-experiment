@@ -70,7 +70,6 @@ const sequence = Array.from({ length }, () => fsm.step())
 if (sequence.length === 0) {
   throw new Error('SequencePrediction sequence length must be positive')
 }
-console.log('sequence', sequence)
 const initialTarget = sequence[0]
 
 const state: State = reactive({
