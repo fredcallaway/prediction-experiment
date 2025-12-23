@@ -6,7 +6,7 @@ export default defineProlificConfig({
   "estimated_completion_time": 2,
   "maximum_allowed_time": 60,
   "reward": 30,
-  "total_available_places": 27,
+  "total_available_places": 200,
   "eligibility": {
     "allowUK": true,
     "minSubmissions": 50,

@@ -15,7 +15,7 @@ const bonus = useBonus()
 bonus.centsPerPoint = 1
 
 const { length } = useExperimentState()
-provideSequencePredictionParams({ length, fsm: 'fsm1' })
+provideSequencePredictionParams({ length, fsm: 'fsm2' })
 
 </script>
 

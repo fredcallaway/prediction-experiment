@@ -11,11 +11,7 @@ type FSMOptions = {
 export class FSM {
   static load(name: keyof typeof fsms): FSM {
     const config = fsms[name]
-    return new FSM({
-      transition: config.transition,
-      emission: config.p_right,
-      initial: config.initial,
-    })
+    return new FSM(config)
   }
 
   static makeSingle(p: number): FSM {
