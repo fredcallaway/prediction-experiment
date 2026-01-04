@@ -27,10 +27,12 @@ provideSequencePredictionParams({ length, fsm: 'fsm2' })
 
   <ESequence name="experiment" ref="experiment">
     <EConsent> <ConsentContent /> </EConsent>
-    <EWarnRefresh />
   
     <ESequencePredictionInstructions />
+    <EConnectionCheck />
+    
     <ESequencePrediction />
+    <EConnectionCheck allow-completion />
   
     <ESurvey />
   
