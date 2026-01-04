@@ -1,6 +1,7 @@
 import fsms from '~/assets/fsms.json'
+import fsmMain from '~/assets/fsm-main.json'
 
-export type FSMName = keyof typeof fsms
+export type FSMName = 'main' | (keyof typeof fsms)
 
 type FSMOptions = {
   transition: number[][]
@@ -9,8 +10,8 @@ type FSMOptions = {
 }
 
 export class FSM {
-  static load(name: keyof typeof fsms): FSM {
-    const config = fsms[name]
+  static load(name: FSMName): FSM {
+    const config = name === 'main' ? fsmMain : fsms[name]
     return new FSM(config)
   }
 
