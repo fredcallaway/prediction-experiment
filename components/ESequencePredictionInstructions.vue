@@ -32,7 +32,6 @@ useInspect({paused})
         </EButtons>
     
         <EPage @mounted="(epoch) => {
-          showGame = true
           hooks.afterChoice.receive((state) => {
             state.target = state.prediction!
             epoch.done()
