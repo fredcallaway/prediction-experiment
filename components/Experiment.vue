@@ -30,12 +30,10 @@ provideSequencePredictionParams({ length, fsm: 'main' })
   
     <ESequencePredictionInstructions />
     <EConnectionCheck />
+    <ENoReturn />
     
     <ESequencePrediction />
-    <EConnectionCheck allow-completion />
-  
     <ESurvey />
-  
     <ECompletion />
   </ESequence>
 </div>
