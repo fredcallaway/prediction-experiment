@@ -30,7 +30,7 @@ provideSequencePredictionParams({ length, fsm: 'main' })
   
     <ESequencePredictionInstructions />
     <EConnectionCheck />
-    <ENoReturn />
+    <ENoReturn mt-30 />
     
     <ESequencePrediction />
     <ESurvey />
