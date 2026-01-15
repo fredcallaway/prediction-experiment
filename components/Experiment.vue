@@ -19,7 +19,7 @@ const { fsm } = useConditions().choice({
 })
 logEvent('experiment.fsm', { fsm })  // just in case
 
-const { length } = useExperimentState()``
+const { length } = useExperimentState()
 provideSequencePredictionParams({ length, fsm })
 
 </script>
