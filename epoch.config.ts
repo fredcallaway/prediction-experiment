@@ -1,7 +1,7 @@
 export default defineEpochConfig({
   title: 'Coin Game',
   icon: '/favicon.svg',
-  version: "two-rand",
+  version: "two-randB",
   contactEmail: 'fredcallaway@gmail.com',
   completion: {
     mode: 'prolific',
