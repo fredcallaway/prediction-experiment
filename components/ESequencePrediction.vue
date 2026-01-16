@@ -33,12 +33,13 @@ const [logSequencePredictionTrial, isSequencePredictionTrial] = declareEventLogg
 
 declareDataView('prediction', (sessionData: SessionData) => {
   // const fsm = sessionData.meta.conditions!.fsm as string
+  const fsm = sessionData.meta.conditions?.fsm
   return R.pipe(
     sessionData.events,
     R.filter(isSequencePredictionTrial),
     R.filter(e => !e.currentEpochId.includes('instructions')),
     R.map((e, trial) => ({
-      // fsm,
+      fsm,
       trial,
       target: e.data.target ? 'right' : 'left',
       prediction: e.data.prediction ? 'right' : 'left',
