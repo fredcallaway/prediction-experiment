@@ -14,13 +14,8 @@ await new Promise(resolve => setTimeout(resolve, 10))
 const bonus = useBonus()
 bonus.centsPerPoint = 1
 
-const { fsm } = useConditions().choice({
-  fsm: ['rand1', 'rand2', 'rand3', 'rand4', 'rand5', 'rand6', 'rand7', 'rand8'] as const,
-})
-logEvent('experiment.fsm', { fsm })  // just in case
-
 const { length } = useExperimentState()
-provideSequencePredictionParams({ length, fsm })
+provideSequencePredictionParams({ length, fsm: 'main' })
 
 </script>
 
