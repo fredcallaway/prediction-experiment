@@ -14,7 +14,8 @@ export const hooks = {
 
 export const [provideSequencePredictionParams, useSequencePredictionParams, ProvideSequencePredictionParams] = defineParams({
   length: 10,
-  fsm: FSM.makeSingle(0.5) as FSM | FSMName,
+  // hack: fsm can just be a sequence
+  fsm: FSM.makeSingle(0.5) as FSM | FSMName | boolean[],
   selectionTime: 0,
   feedbackInTime: 500,
   feedbackOutTime: 400,
@@ -66,11 +67,14 @@ if (!Number.isInteger(length) || length <= 0) {
   throw new Error('SequencePrediction length must be a positive integer')
 }
 
-const fsm = typeof fsmParam === 'string' ? FSM.load(fsmParam) : fsmParam
-const sequence = Array.from({ length }, () => fsm.step())
-if (sequence.length === 0) {
-  throw new Error('SequencePrediction sequence length must be positive')
+const getSequence = () => {
+  if (Array.isArray(fsmParam)) {
+    return fsmParam
+  }
+  const fsm = typeof fsmParam === 'string' ? FSM.load(fsmParam) : fsmParam
+  return repeatedly(length, () => fsm.step())
 }
+const sequence = getSequence()
 const initialTarget = sequence[0]
 
 const state: State = reactive({
